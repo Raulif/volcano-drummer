@@ -1,0 +1,15 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-volcano-dev-163203-authRole",
+            "UnauthRoleArn": "arn:aws:iam::295500448478:role/amplify-volcano-dev-163203-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::295500448478:role/amplify-volcano-dev-163203-authRole",
+            "Region": "eu-central-1",
+            "DeploymentBucketName": "amplify-volcano-dev-163203-deployment",
+            "UnauthRoleName": "amplify-volcano-dev-163203-unauthRole",
+            "StackName": "amplify-volcano-dev-163203",
+            "StackId": "arn:aws:cloudformation:eu-central-1:295500448478:stack/amplify-volcano-dev-163203/6c0963e0-895d-11ea-85f7-0649b837173a",
+            "AmplifyAppId": "dcxj330d1qcjo"
+        }
+    }
+}

@@ -1,0 +1,21 @@
+{
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "emmet.triggerExpansionOnTab": true,
+  "auto-rename-tag.activationOnLanguage": [
+    "html",
+    "xml",
+    "javascript",
+    "javascriptreact"
+  ],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "gitHistory.showEditorTitleMenuBarIcons": false,
+  "colorize.languages": [
+    "javascript",
+    "javascriptreact",
+    "xml"
+    // ...
+  ]
+}
