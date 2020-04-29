@@ -1,1 +1,2 @@
-export * from "./sequenceReducer";
+export * from './sequenceReducer';
+export * from './authReducer';

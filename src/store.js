@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useReducer } from 'react';
 
-import { sequenceReducer } from "./reducers";
+import { sequenceReducer, authReducer } from './reducers';
 
 export const Store = React.createContext();
 
-const initialState = {
-  currentSequence: undefined,
-  sequences: [],
-  sequencePlaying: false,
-};
-
 export const StoreProvider = (props) => {
-  const [state, dispatch] = React.useReducer(sequenceReducer, initialState);
-  const value = { state, dispatch };
-  return <Store.Provider value={value}>{props.children}</Store.Provider>;
+  const [sequenceState, sequenceDispatch] = useReducer(sequenceReducer);
+  const [userState, userDispatch] = useReducer(authReducer);
+
+  return (
+    <Store.Provider
+      value={{
+        state: { ...sequenceState, ...userState },
+        dispatch: { sequenceDispatch, userDispatch },
+      }}
+    >
+      {props.children}
+    </Store.Provider>
+  );
 };

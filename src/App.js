@@ -1,30 +1,48 @@
-import React, { useContext, useEffect } from "react";
-import { Container } from "@material-ui/core";
+import React, { useContext, useEffect, useCallback } from 'react';
+import { Container } from '@material-ui/core';
 
-import { Controls, SequenceView, PlaySequenceButton } from "./components";
-import { metronome, initMetronome } from "./controllers/Metronome";
-import { Store } from "./store";
+import {
+  Controls,
+  SequenceView,
+  PlaySequenceButton,
+  SignInForm,
+  SignUpForm,
+} from './components';
+import { metronome, initMetronome } from './controllers/Metronome';
+import { Store } from './store';
 import {
   FETCH_LOCAL_STORAGE,
   SEQUENCE_STARTED_PLAYING,
   SEQUENCE_FINISHED_PLAYING,
-} from "./actions";
-import { Todos } from "./components/Todos";
+  FETCH_USER_FROM_LOCAL_STORAGE,
+  SIGN_OUT,
+} from './actions';
+import { Todos } from './components/Todos';
 
 const App = () => {
-  const { state, dispatch } = useContext(Store);
-  const { currentSequence } = state;
+  const {
+    state,
+    dispatch: { sequenceDispatch, userDispatch },
+  } = useContext(Store);
+  const { currentSequence, user } = state;
+  console.log('USER:', user);
 
   useEffect(() => {
-    const sequenceStartCB = () => dispatch({ type: SEQUENCE_STARTED_PLAYING });
+    const sequenceStartCB = () =>
+      sequenceDispatch({ type: SEQUENCE_STARTED_PLAYING });
     const sequenceFinishCB = () =>
-      dispatch({ type: SEQUENCE_FINISHED_PLAYING });
+      sequenceDispatch({ type: SEQUENCE_FINISHED_PLAYING });
 
     initMetronome(sequenceStartCB, sequenceFinishCB);
-  }, [dispatch]);
+  }, [sequenceDispatch]);
 
   useEffect(() => {
-    !currentSequence && dispatch({ type: FETCH_LOCAL_STORAGE });
+    !currentSequence && sequenceDispatch({ type: FETCH_LOCAL_STORAGE });
+  });
+
+  useEffect(() => {
+    (!user || !user.user) &&
+      userDispatch({ type: FETCH_USER_FROM_LOCAL_STORAGE });
   });
 
   useEffect(() => {
@@ -33,24 +51,36 @@ const App = () => {
 
   const hasSteps = currentSequence && currentSequence.steps.length;
 
+  const onLogout = useCallback(() => {
+    userDispatch({ type: SIGN_OUT });
+  }, [userDispatch]);
+
   return (
     <Container
       style={{
-        maxWidth: "350px",
-        margin: "0 auto",
-        textAlign: "center",
+        maxWidth: '350px',
+        margin: '0 auto',
+        textAlign: 'center',
         padding: 0,
       }}
     >
-      <Controls />
-
-      {currentSequence && (
+      {user && user.user && (
         <>
-          <SequenceView sequence={currentSequence} key={currentSequence.id} />
-          {<PlaySequenceButton disabled={!hasSteps} />}
+          <p>{user.user.username}</p>
+          <Controls />
+          {currentSequence && (
+            <>
+              <SequenceView
+                sequence={currentSequence}
+                key={currentSequence.id}
+              />
+              {<PlaySequenceButton disabled={!hasSteps} />}
+            </>
+          )}
+          <button onClick={onLogout}>Logout</button>
         </>
       )}
-
+      {(!user || !user.user) && <SignUpForm />}
       <Todos />
 
       {/* {thereAreSequences && (

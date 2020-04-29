@@ -6,16 +6,22 @@ import {
   CLEAR_CURRENT_SEQUENCE,
   SEQUENCE_FINISHED_PLAYING,
   SEQUENCE_STARTED_PLAYING,
-} from "../actions/sequenceActions";
+} from '../actions/sequenceActions';
 
 import {
   getNewSequence,
   saveCurrentSequenceToLocalStorage,
   clearLocalStorage,
   getCurrentSequenceFromLocalStorage,
-} from "./utils";
+} from './sequenceUtils';
 
-const sequenceReducer = (state, action) => {
+const initialState = {
+  currentSequence: undefined,
+  sequences: [],
+  sequencePlaying: false,
+};
+
+const sequenceReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_LOCAL_STORAGE:
       const fetchedSequence = getCurrentSequenceFromLocalStorage();

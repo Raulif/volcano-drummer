@@ -1,1 +1,2 @@
-export * from "./sequenceActions";
+export * from './sequenceActions';
+export * from './authActions';

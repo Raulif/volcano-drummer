@@ -48,7 +48,6 @@ BiquadFilterNode.type and OscillatorNode.type.
 
 */
 (function (global, exports, perf) {
-  console.log("monkeypatching");
   function fixSetTarget(param) {
     if (!param)
       // if NYI, just return

@@ -61,7 +61,6 @@ class Metronome {
   }
 
   set sequence(sequence) {
-    console.log({ sequence });
     this._sequence = sequence;
   }
 

@@ -20,7 +20,6 @@ class Timer {
   playBeat(bpm) {
     if (!this.playing) {
       this.playing = true;
-      console.log({ ACTUAL_SPEED: this.convertBpmToMs(bpm) });
       this.interval = setInterval(() => {
         player.play();
       }, this.convertBpmToMs(bpm));
@@ -54,7 +53,6 @@ class Timer {
   playSequenceItem(item) {
     return new Promise((res, rej) => {
       const { bpm, length } = item;
-      console.log({ PLAYING_BPM: bpm });
       this.playBeat(bpm);
       this.runCounter(length);
 

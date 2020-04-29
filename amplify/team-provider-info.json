@@ -10,6 +10,17 @@
             "StackName": "amplify-volcano-dev-163203",
             "StackId": "arn:aws:cloudformation:eu-central-1:295500448478:stack/amplify-volcano-dev-163203/6c0963e0-895d-11ea-85f7-0649b837173a",
             "AmplifyAppId": "dcxj330d1qcjo"
+        },
+        "categories": {
+            "auth": {
+                "volcano789e228c": {}
+            },
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "dcxj330d1qcjo",
+                    "type": "manual"
+                }
+            }
         }
     }
 }

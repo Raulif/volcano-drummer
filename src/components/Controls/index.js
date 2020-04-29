@@ -1,7 +1,7 @@
-import React, { useState, useCallback, useContext } from "react";
-import { Button, Grid, Typography } from "@material-ui/core";
+import React, { useState, useCallback, useContext } from 'react';
+import { Button, Grid, Typography } from '@material-ui/core';
 
-import { Store } from "../../store";
+import { Store } from '../../store';
 import {
   Container,
   PlayPauseButton,
@@ -10,17 +10,17 @@ import {
   TextWrapper,
   GridItem,
   SliderWrapper,
-} from "./styledComponents";
+} from './styledComponents';
 
-import { metronome } from "../../controllers/Metronome";
-import { BpmSlider } from "./BpmSlider";
-import { LengthSlider } from "./LengthSlider";
+import { metronome } from '../../controllers/Metronome';
+import { BpmSlider } from './BpmSlider';
+import { LengthSlider } from './LengthSlider';
 import {
   ADD_SEQUENCE,
   ADD_STEP_TO_CURRENT_SEQUENCE,
   CLEAR_CURRENT_SEQUENCE,
-} from "../../actions/sequenceActions";
-import { toMSS } from "../../utils";
+} from '../../actions/sequenceActions';
+import { toMSS } from '../../utils';
 
 const INITIAL_BPM = 50,
   INITIAL_LENGTH = 1;
@@ -30,7 +30,10 @@ const Controls = () => {
   const [length, setLength] = useState(INITIAL_LENGTH);
   const [playing, setPlaying] = useState(false);
 
-  const { state, dispatch } = useContext(Store);
+  const {
+    state,
+    dispatch: { sequenceDispatch },
+  } = useContext(Store);
 
   const onPlay = useCallback(() => {
     setPlaying(true);
@@ -52,74 +55,84 @@ const Controls = () => {
   }, []);
 
   const onAddStep = useCallback(() => {
-    dispatch({ type: ADD_STEP_TO_CURRENT_SEQUENCE, payload: { bpm, length } });
-  }, [bpm, length, dispatch]);
+    sequenceDispatch({
+      type: ADD_STEP_TO_CURRENT_SEQUENCE,
+      payload: { bpm, length },
+    });
+  }, [bpm, length, sequenceDispatch]);
 
   const onSaveSequence = useCallback(() => {
-    dispatch({ type: ADD_SEQUENCE, payload: state.currentSequence });
-  }, [dispatch, state.currentSequence]);
+    sequenceDispatch({ type: ADD_SEQUENCE, payload: state.currentSequence });
+  }, [sequenceDispatch, state.currentSequence]);
 
   const onClearSequence = useCallback(() => {
     setBpm(INITIAL_BPM);
     setLength(INITIAL_LENGTH);
 
-    dispatch({ type: CLEAR_CURRENT_SEQUENCE });
-  }, [dispatch]);
+    sequenceDispatch({ type: CLEAR_CURRENT_SEQUENCE });
+  }, [sequenceDispatch]);
 
   return (
     <Grid container space={2}>
       <Container container>
-        <Grid item xs={3} style={{ display: "flex" }}>
+        <Grid item xs={3} style={{ display: 'flex' }}>
           <Button
             onClick={playing ? onPause : onPlay}
-            variant="contained"
-            color="primary"
-            style={{ alignSelf: "center", width: "100%" }}
+            variant='contained'
+            color='primary'
+            style={{ alignSelf: 'center', width: '100%' }}
           >
-            {playing ? "PAUSE" : "START"}
+            {playing ? 'PAUSE' : 'START'}
           </Button>
         </Grid>
         <ColumnGrid item xs={3} space={1}>
           <TextWrapper>
-            <Typography variant="body1">BPM:</Typography>
+            <Typography variant='body1'>BPM:</Typography>
           </TextWrapper>
           <TextWrapper>
-            <Typography variant="h4">{bpm}</Typography>
+            <Typography variant='h4'>{bpm}</Typography>
           </TextWrapper>
         </ColumnGrid>
         <ColumnGrid item xs={3} space={1}>
           <TextWrapper>
-            <Typography variant="body1">Length:</Typography>
+            <Typography variant='body1'>Length:</Typography>
           </TextWrapper>
           <TextWrapper>
-            <Typography variant="h4">{toMSS(length)}</Typography>
+            <Typography variant='h4'>{toMSS(length)}</Typography>
           </TextWrapper>
         </ColumnGrid>
       </Container>
-      <Container container style={{ paddingTop: "1em" }}>
+      <Container container style={{ paddingTop: '1em' }}>
         <GridItem>
-          <Typography id="bpm-slider">BPM:</Typography>
+          <Typography id='bpm-slider'>BPM:</Typography>
           <SliderWrapper>
             <BpmSlider onChange={onBpmSliderChange} value={bpm} />
           </SliderWrapper>
         </GridItem>
         <GridItem>
-          <Typography id="bpm-slider">Length:</Typography>
+          <Typography id='bpm-slider'>Length:</Typography>
           <SliderWrapper>
             <LengthSlider value={length} onChange={onLengthSliderChange} />
           </SliderWrapper>
         </GridItem>
         <GridItem>
-          <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-            <Button variant="contained" color="secondary" onClick={onAddStep}>
+          <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+            <Button variant='contained' color='secondary' onClick={onAddStep}>
               Add step
             </Button>
-            <Button variant="outlined" color="primary" onClick={onSaveSequence}>
+            <Button
+              variant='outlined'
+              color='primary'
+              onClick={onSaveSequence}
+              disabled={
+                !state.currentSequence || !state.currentSequence.steps.length
+              }
+            >
               Save
             </Button>
             <Button
-              variant="contained"
-              color="primary"
+              variant='contained'
+              color='primary'
               onClick={onClearSequence}
             >
               Clear
